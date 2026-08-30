@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+{% block content %}
+<h2 class="mt-4 mb-3">EditTag</h2>
+<form action="{{ url_for('update_tag', id=tag.tag_id) }}" method="post">
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th>項目名</th>
+                    <th>値</th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                <tr>
+                    <th>タグ名</th>
+                    <td>
+                        <input type="text" class="form-control" name="tag_name" value="{{ tag.tag_name or '' }}"
+                            required>
+                    </td>
+                </tr>
+                <tr>
+                    <th>親グループ名</th>
+                    <td>
+                        <select class="form-select" aria-label="Default select example" name="group_id">
+                            <option value="" {% if not tag.group_id %}selected{% endif %}>なし</option>
+                            {% for group in groups %}
+                            <option value="{{ group.group_id }}" {% if group.group_id==tag.group_id %}selected{% endif
+                                %}>
+                                {{ group.group_name }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="d-flex justify-content-end gap-2">
+        <a href="{{ url_for('option') }}" class="btn btn-outline-secondary">設定に戻る</a>
+        <button type="submit" class="btn btn-primary">更新</button>
+        <a href="{{ url_for('delete_tag', id=tag.tag_id) }}" class="btn btn-danger">削除</a>
+    </div>
+</form>
+{% endblock %}

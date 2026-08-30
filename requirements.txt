@@ -3,3 +3,5 @@ Flask-SQLAlchemy
 requests
 psycopg2
 python-dotenv
+APScheduler
+croniter
