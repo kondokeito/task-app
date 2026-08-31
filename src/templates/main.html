@@ -29,7 +29,7 @@
 
                     {% if task.status %}
                     <span class="badge rounded-pill text-bg-info">
-                        ステータス名{{ task.status.status_name }}
+                        ステータス名:{{ task.status.status_name }}
                     </span>
                     {% endif %}
 
@@ -63,9 +63,7 @@
                 </div>
 
                 {% if task.note %}
-                <div class="text-muted">
-                    {{ task.note }}
-                </div>
+                <div class="text-body-secondary" style="white-space: pre-wrap;">{{ task.note }}</div>
                 {% endif %}
 
             </div>
