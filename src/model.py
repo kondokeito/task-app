@@ -32,6 +32,8 @@ class Status(db.Model):
     status_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     status_name = db.Column(db.Text, nullable=False)
 
+    group_id = db.Column(db.Integer, db.ForeignKey(
+        "groups.group_id"), nullable=True)
     tag_id = db.Column(db.Integer, db.ForeignKey("tags.tag_id"), nullable=True)
 
     group = db.relationship("Group", back_populates="statuses")
