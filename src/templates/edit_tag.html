@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
-<h2 class="mt-4 mb-3">EditTag</h2>
+<h2 class="mt-4 mb-3">タグ編集</h2>
 <form action="{{ url_for('update_tag', id=tag.tag_id) }}" method="post">
     <div class="table-responsive">
         <table class="table align-middle">

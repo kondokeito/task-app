@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
-<h2 class="mt-4 mb-3">EditTask</h2>
+<h2 class="mt-4 mb-3">タスク編集</h2>
 <form action="{{ url_for('update_task', id=task.task_id) }}" method="post">
     <div class="table-responsive">
         <table class="table align-middle">
