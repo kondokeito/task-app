@@ -88,12 +88,6 @@ def remind_job():
             print(f"{now}送信中にエラーが発生しました:{e}")
 
 
-if not app.debug or os.environ.get('WERKZEUG_RUN_MAIN') == 'true':
-    scheduler = BackgroundScheduler()
-    scheduler.add_job(remind_job, 'cron', second=0)
-    scheduler.start()
-
-
 @app.route('/')
 def main():
     group_id = to_int_or_none(request.args.get('group_id'))
@@ -419,4 +413,8 @@ app.config['TEMPLATES_AUTO_RELOAD'] = True
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
 if __name__ == '__main__':
-    app.run(debug=True, use_reloader=True)
+    scheduler = BackgroundScheduler()
+    scheduler.add_job(remind_job, 'cron', second=0)
+    scheduler.start()
+
+    app.run(debug=True, use_reloader=False)
