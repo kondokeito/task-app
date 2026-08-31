@@ -23,6 +23,15 @@ load_dotenv()
 WEBHOOK_URL = os.getenv('DISCORD_WEBHOOK_URL')
 
 
+def to_int_or_none(value):
+    if value is None or value == '':
+        return None
+    try:
+        return int(value)
+    except (ValueError, TypeError):
+        return None
+
+
 def remind_job():
     with app.app_context():
         db.session.remove()
@@ -121,15 +130,11 @@ def create_task():
     new_task = Task()
     new_task.task_name = request.form.get('task_name', '')
 
-    group_id_str = request.form.get('group_id', '')
-    new_task.group_id = int(group_id_str) if group_id_str.isdigit() else None
+    new_task.group_id = to_int_or_none(request.form.get('group_id', ''))
 
-    tag_id_str = request.form.get('tag_id', '')
-    new_task.tag_id = int(tag_id_str) if tag_id_str.isdigit() else None
+    new_task.tag_id = to_int_or_none(request.form.get('tag_id', ''))
 
-    status_id_str = request.form.get('status_id', '')
-    new_task.status_id = int(
-        status_id_str) if status_id_str.isdigit() else None
+    new_task.status_id = to_int_or_none(request.form.get('status_id', ''))
 
     datetime_str = request.form.get('datetime', '')
     new_task.datetime = datetime.fromisoformat(
@@ -137,9 +142,8 @@ def create_task():
 
     new_task.repetition = request.form.get('repetition', '') or None
 
-    offset_str = request.form.get('remind_offset_minutes', '')
-    new_task.remind_offset_minutes = int(
-        offset_str) if offset_str.isdigit() else None
+    new_task.remind_offset_minutes = to_int_or_none(
+        request.form.get('remind_offset_minutes', ''))
 
     note_str = request.form.get('note', '')
     new_task.note = note_str if note_str else None
@@ -195,16 +199,11 @@ def update_task(id):
 
     update_task.task_name = request.form.get('task_name', '')
 
-    group_id_str = request.form.get('group_id', '')
-    update_task.group_id = int(
-        group_id_str) if group_id_str.isdigit() else None
+    update_task.group_id = to_int_or_none(request.form.get('group_id', ''))
 
-    tag_id_str = request.form.get('tag_id', '')
-    update_task.tag_id = int(tag_id_str) if tag_id_str.isdigit() else None
+    update_task.tag_id = to_int_or_none(request.form.get('tag_id', ''))
 
-    status_id_str = request.form.get('status_id', '')
-    update_task.status_id = int(
-        status_id_str) if status_id_str.isdigit() else None
+    update_task.status_id = to_int_or_none(request.form.get('status_id', ''))
 
     datetime_str = request.form.get('datetime', '')
     update_task.datetime = datetime.fromisoformat(
@@ -212,9 +211,8 @@ def update_task(id):
 
     update_task.repetition = request.form.get('repetition', '') or None
 
-    offset_str = request.form.get('remind_offset_minutes', '')
-    update_task.remind_offset_minutes = int(
-        offset_str) if offset_str.isdigit() else None
+    update_task.remind_offset_minutes = to_int_or_none(
+        request.form.get('remind_offset_minutes', ''))
 
     note_str = request.form.get('note', '')
     update_task.note = note_str if note_str else None
@@ -290,8 +288,7 @@ def create_tag():
     new_tag = Tag()
     new_tag.tag_name = request.form.get('tag_name', '')
 
-    group_id_str = request.form.get('group_id', '')
-    new_tag.group_id = int(group_id_str) if group_id_str.isdigit() else None
+    new_tag.group_id = to_int_or_none(request.form.get('group_id', ''))
 
     db.session.add(new_tag)
     db.session.commit()
@@ -317,8 +314,7 @@ def update_tag(id):
 
     update_tag.tag_name = request.form.get('tag_name', '')
 
-    group_id_str = request.form.get('group_id', '')
-    update_tag.group_id = int(group_id_str) if group_id_str.isdigit() else None
+    update_tag.group_id = to_int_or_none(request.form.get('group_id', ''))
 
     db.session.commit()
 
@@ -345,8 +341,7 @@ def create_status():
     new_status = Status()
     new_status.status_name = request.form.get('status_name', '')
 
-    tag_id_str = request.form.get('tag_id', '')
-    new_status.tag_id = int(tag_id_str) if tag_id_str.isdigit() else None
+    new_status.tag_id = to_int_or_none(request.form.get('tag_id', ''))
 
     db.session.add(new_status)
     db.session.commit()
@@ -372,8 +367,7 @@ def update_status(id):
 
     update_status.status_name = request.form.get('status_name', '')
 
-    tag_id_str = request.form.get('tag_id', '')
-    update_status.tag_id = int(tag_id_str) if tag_id_str.isdigit() else None
+    update_status.tag_id = to_int_or_none(request.form.get('tag_id', ''))
 
     db.session.commit()
 
