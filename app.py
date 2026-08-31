@@ -96,13 +96,40 @@ if not app.debug or os.environ.get('WERKZEUG_RUN_MAIN') == 'true':
 
 @app.route('/')
 def main():
-    tasks = Task.query.options(
+    group_id = to_int_or_none(request.args.get('group_id'))
+    tag_id = to_int_or_none(request.args.get('tag_id'))
+    status_id = to_int_or_none(request.args.get('status_id'))
+
+    query = Task.query.options(
         joinedload(Task.group),
         joinedload(Task.tag),
         joinedload(Task.status)
-    ).all()
+    )
 
-    return render_template('main.html', tasks=tasks)
+    if group_id:
+        query = query.filter(Task.group_id == group_id)
+    if tag_id:
+        query = query.filter(Task.tag_id == tag_id)
+    if status_id:
+        query = query.filter(Task.status_id == status_id)
+
+    query = query.order_by(Task.datetime.asc())
+
+    tasks = query.all()
+    groups = Group.query.all()
+    tags = Tag.query.all()
+    statuses = Status.query.all()
+
+    return render_template(
+        'main.html',
+        tasks=tasks,
+        groups=groups,
+        tags=tags,
+        statuses=statuses,
+        selected_group_id=group_id,
+        selected_tag_id=tag_id,
+        selected_status_id=status_id
+    )
 
 
 @app.route('/edit/task/<int:id>')
